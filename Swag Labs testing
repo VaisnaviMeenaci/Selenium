@@ -1,0 +1,74 @@
+package agflow;
+
+import java.util.HashMap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Swagdemo {
+	public static void main(String[] args) {
+
+        // Auto setup ChromeDriver
+     
+        WebDriver driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+        driver.get("https://www.saucedemo.com/");
+        
+        // ----- Preferences to disable built-in password manager/autofill/etc. -----
+        HashMap<String, Object> prefs = new HashMap<>();
+        // Disable Chrome password manager prompts
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+
+        // Disable browser auto-fill features
+        prefs.put("autofill.profile_enabled", false);
+        prefs.put("autofill.credit_card_enabled", false);
+
+        // Block web push notifications (0 = default, 1 = allow, 2 = block)
+        HashMap<String, Object> contentSettings = new HashMap<>();
+        contentSettings.put("notifications", 2);
+        prefs.put("profile.default_content_setting_values", contentSettings);     
+        
+        // Login
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+
+        // Add item to cart
+        driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
+        System.out.println("Item added to cart successfully!");
+        
+        // Declare cartBadge here and use it
+        WebElement cartBadge = driver.findElement(
+            By.xpath("//span[@data-test='shopping-cart-badge']")
+        );
+
+        // Print the number
+        System.out.println("Cart badge number: " + cartBadge.getText());
+
+        // Click cart link
+        driver.findElement(
+            By.xpath("//a[@data-test='shopping-cart-link']")
+        ).click();
+        driver.findElement(By.id("continue-shopping")).click();
+        
+        driver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        WebElement cartBadge2 = driver.findElement(By.xpath("//span[@data-test='shopping-cart-badge']"));
+        String badgeNumber = cartBadge.getText();
+        System.out.println("Cart badge number: " + badgeNumber);
+      
+
+            // Print the number
+            System.out.println("Cart badge number: " + cartBadge.getText());
+            
+
+    } 
+	
+        //driver.quit();
+    }
+
+	
+
